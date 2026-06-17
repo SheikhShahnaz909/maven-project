@@ -1,0 +1,47 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
+}
+
+group = 'com.yit'
+version = '1.0-SNAPSHOT'
+description = 'maven-demo'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+task run(type: JavaExec) {
+    mainClass = 'com.yit.App'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    
+    testLogging {
+        events "passed", "failed", "skipped"
+        exceptionFormat = "full"
+        showStandardStreams = true
+    }
+}
